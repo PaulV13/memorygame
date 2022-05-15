@@ -1,0 +1,8 @@
+<resources>
+    <string name="app_name">memorygame</string>
+    <string name="title">MEMORY GAME</string>
+    <string name="easy">FACIL</string>
+    <string name="normal">NORMAL</string>
+    <string name="hard">DIFICIL</string>
+    <string name="back">VOLVER</string>
+</resources>
