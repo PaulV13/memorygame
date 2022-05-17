@@ -1,5 +1,7 @@
 package com.example.memorygame.components
 
+import androidx.compose.animation.core.animateFloatAsState
+import androidx.compose.animation.core.tween
 import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -8,6 +10,7 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
@@ -26,6 +29,22 @@ fun CustomCard(
     list: MutableState<MutableList<Int>>,
     columns: Int,
 ){
+    var rotated by remember { mutableStateOf(false) }
+
+    val rotation by animateFloatAsState(
+        targetValue = if (rotated) 180f else 0f,
+        animationSpec = tween(400)
+    )
+
+    val animateFront by animateFloatAsState(
+        targetValue = if (!rotated) 1f else 0f,
+        animationSpec = tween(400)
+    )
+
+    val animateBack by animateFloatAsState(
+        targetValue = if (rotated) 1f else 0f,
+        animationSpec = tween(400)
+    )
 
     val modifier =
         if(columns == 5) Modifier
@@ -48,7 +67,12 @@ fun CustomCard(
             shape = RoundedCornerShape(4.dp),
             backgroundColor = Color.White,
             modifier = modifier
+                .graphicsLayer {
+                    rotationY = rotation
+                    cameraDistance = 8 * density
+                }
                 .clickable {
+                    rotated = !rotated
                     if (indexSelected1.value == index) {
                         return@clickable
                     }
@@ -71,6 +95,10 @@ fun CustomCard(
                         contentDescription = "",
                         contentScale = ContentScale.Crop,
                         modifier = Modifier
+                            .graphicsLayer {
+                                alpha = if (rotated) animateBack else animateFront
+                                rotationY = rotation
+                            }
                             .padding(2.dp)
                             .clip(shape = RoundedCornerShape(4.dp))
                     )
