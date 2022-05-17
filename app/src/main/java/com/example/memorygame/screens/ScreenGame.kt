@@ -54,7 +54,6 @@ fun ScreenGame(
         }
     }
 
-
     Box(
         modifier = Modifier.fillMaxSize(),
         contentAlignment = Alignment.Center
@@ -101,18 +100,20 @@ fun ScreenGame(
             )
             Spacer(modifier = Modifier.height(15.dp))
             Text(text = "Movements: $movement")
-            AlertDialogSample(
-                navController = navController,
-                openDialog = openDialog,
-                time = time,
-                onConfirmButton = {
-                    onResetGame()
-                    onRandomList()
-                },
-                onDismissButton = {
-                    onBackToMenu()
-                }
-            )
+            if(openDialog.value){
+                AlertDialogSample(
+                    navController = navController,
+                    openDialog = openDialog,
+                    time = time,
+                    onConfirmButton = {
+                        onResetGame()
+                        onRandomList()
+                    },
+                    onDismissButton = {
+                        onBackToMenu()
+                    }
+                )
+            }
             Spacer(modifier = Modifier.height(20.dp))
             BackHandler {
                 navController.popBackStack("menu", false)
