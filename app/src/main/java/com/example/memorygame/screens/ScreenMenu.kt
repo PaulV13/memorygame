@@ -4,6 +4,8 @@ package com.example.memorygame.screens
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.Button
+import androidx.compose.material.ButtonColors
+import androidx.compose.material.ButtonDefaults.buttonColors
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
@@ -12,7 +14,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import com.example.memorygame.R
 
@@ -27,28 +28,32 @@ fun ScreenMenu(
         contentAlignment = Alignment.Center) {
         Column(horizontalAlignment = Alignment.CenterHorizontally) {
             Text(text = "MEMORY GAME",
-                fontSize = 16.sp,
-                fontWeight = FontWeight.Bold)
+                color = MaterialTheme.colors.primaryVariant,
+                fontWeight = FontWeight.Bold,
+                style = MaterialTheme.typography.h4)
             Spacer(modifier = Modifier.height(60.dp))
             Button(onClick = {
                 onClicked(4, 8)
                 navController.navigate("game") },
                 modifier = Modifier.width(100.dp)) {
-                    Text(stringResource(id = R.string.easy))
+                    Text(stringResource(id = R.string.easy),
+                        color = MaterialTheme.colors.surface)
             }
             Spacer(modifier = Modifier.height(10.dp))
             Button(onClick = {
                 onClicked(4, 12)
                 navController.navigate("game") },
                 modifier = Modifier.width(100.dp)) {
-                Text(stringResource(id = R.string.normal))
+                Text(stringResource(id = R.string.normal),
+                    color = MaterialTheme.colors.surface)
             }
             Spacer(modifier = Modifier.height(10.dp))
             Button(onClick = {
                 onClicked(5, 15)
                 navController.navigate("game") },
                 modifier = Modifier.width(100.dp)) {
-                Text(stringResource(id = R.string.hard))
+                Text(stringResource(id = R.string.hard),
+                    color = MaterialTheme.colors.surface)
             }
         }
     }

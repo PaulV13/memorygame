@@ -8,19 +8,20 @@ import androidx.compose.material.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.example.memorygame.screens.ScreenGame
 import com.example.memorygame.screens.ScreenMenu
-import com.example.memorygame.screens.SplashScreen
 import com.example.memorygame.ui.theme.MemorygameTheme
 import com.example.memorygame.viewmodel.CounterViewModel
 
 class MainActivity : ComponentActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        installSplashScreen()
         super.onCreate(savedInstanceState)
         setContent {
             MemorygameTheme {
@@ -32,10 +33,7 @@ class MainActivity : ComponentActivity() {
                     val navController = rememberNavController()
                     val viewModel: CounterViewModel = viewModel()
 
-                    NavHost(navController = navController, startDestination = "splash_screen") {
-                        composable("splash_screen"){
-                            SplashScreen(navController = navController)
-                        }
+                    NavHost(navController = navController, startDestination = "menu") {
                         composable("menu") {
                             ScreenMenu(
                                 navController = navController,

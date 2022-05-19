@@ -10,10 +10,9 @@ import androidx.compose.material.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import com.example.memorygame.R
 import com.example.memorygame.components.AlertDialogSample
@@ -54,77 +53,111 @@ fun ScreenGame(
         }
     }
 
-    Box(
+
+    Column(
         modifier = Modifier.fillMaxSize(),
-        contentAlignment = Alignment.Center
+        horizontalAlignment = Alignment.CenterHorizontally,
+        verticalArrangement = Arrangement.SpaceBetween
     ) {
-        Column(horizontalAlignment = Alignment.CenterHorizontally) {
+        Spacer(modifier = Modifier.height(30.dp))
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(8.dp),
+            horizontalArrangement = Arrangement.SpaceEvenly
+        ) {
             Text(
-                stringResource(id = R.string.title),
-                fontSize = 18.sp,
-                fontWeight = FontWeight.Bold
+                text = stringResource(id = R.string.pairs),
+                color = Color.DarkGray,
+                style = MaterialTheme.typography.h6
             )
-            Spacer(modifier = Modifier.height(30.dp))
-            LazyVerticalGrid(
-                cells = GridCells.Fixed(columns),
-                contentPadding = PaddingValues(
-                    start = 4.dp,
-                    top = 0.dp,
-                    end = 4.dp,
-                    bottom = 0.dp
-                ),
-                content = {
-                    items(cards.size) { index ->
-                        CustomCard(
-                            card = cards[index],
-                            index = index,
-                            clicks = clicks,
-                            indexSelected1 = indexSelected1,
-                            indexSelected2 = indexSelected2,
-                            onSelected1 = onSelected1,
-                            onSelected2 = onSelected2,
-                            list = list,
-                            columns = columns
-                        )
-                    }
+            Text(
+                text = "$parCount",
+                color = MaterialTheme.colors.primaryVariant,
+                style = MaterialTheme.typography.h6
+            )
+            Spacer(modifier = Modifier.width(15.dp))
+            Text(
+                text = stringResource(id = R.string.movements),
+                color = Color.DarkGray,
+                style = MaterialTheme.typography.h6
+            )
+            Text(
+                text = "$movement",
+                color = MaterialTheme.colors.primaryVariant,
+                style = MaterialTheme.typography.h6
+            )
+        }
+        Spacer(modifier = Modifier.height(15.dp))
+        LazyVerticalGrid(
+            cells = GridCells.Fixed(columns),
+            contentPadding = PaddingValues(
+                start = 4.dp,
+                top = 0.dp,
+                end = 4.dp,
+                bottom = 0.dp
+            ),
+            content = {
+                items(cards.size) { index ->
+                    CustomCard(
+                        card = cards[index],
+                        index = index,
+                        clicks = clicks,
+                        indexSelected1 = indexSelected1,
+                        indexSelected2 = indexSelected2,
+                        onSelected1 = onSelected1,
+                        onSelected2 = onSelected2,
+                        list = list,
+                        columns = columns
+                    )
                 }
-            )
-            Spacer(modifier = Modifier.height(15.dp))
-            Text(text = "Remaining pairs: $parCount")
-            Spacer(modifier = Modifier.height(15.dp))
+            }
+        )
+        Spacer(modifier = Modifier.height(15.dp))
+        Row {
             Text(
                 text =
-                if (time.value == 60) "Time: 1:00"
-                else if (time.value >= 10) "Time: 00:${time.value}"
-                else "Time: 00:0${time.value}"
+                if (time.value == 60) "Time: "
+                else if (time.value >= 10) "Time: "
+                else "Time: 00:0",
+                color = Color.DarkGray,
+                style = MaterialTheme.typography.h6
             )
-            Spacer(modifier = Modifier.height(15.dp))
-            Text(text = "Movements: $movement")
-            if(openDialog.value){
-                AlertDialogSample(
-                    navController = navController,
-                    openDialog = openDialog,
-                    time = time,
-                    onConfirmButton = {
-                        onResetGame()
-                        onRandomList()
-                    },
-                    onDismissButton = {
-                        onBackToMenu()
-                    }
-                )
-            }
-            Spacer(modifier = Modifier.height(20.dp))
-            BackHandler {
+            Text(
+                text = if (time.value == 60) "01:00"
+                else if (time.value >= 10) "00:${time.value}"
+                else "${time.value}",
+                color = MaterialTheme.colors.primaryVariant,
+                style = MaterialTheme.typography.h6
+            )
+        }
+        if (openDialog.value) {
+            AlertDialogSample(
+                navController = navController,
+                openDialog = openDialog,
+                time = time,
+                onConfirmButton = {
+                    onResetGame()
+                    onRandomList()
+                },
+                onDismissButton = {
+                    onBackToMenu()
+                }
+            )
+        }
+        Spacer(modifier = Modifier.height(20.dp))
+        BackHandler {
+            navController.popBackStack("menu", false)
+            onBackToMenu()
+        }
+        Button(onClick = {
+            if (indexSelected1.value == -1 || indexSelected2.value == -1) {
                 navController.popBackStack("menu", false)
                 onBackToMenu()
             }
-            Button(onClick = {
-                if (indexSelected1.value == -1 || indexSelected2.value == -1) {
-                    navController.popBackStack("menu", false)
-                    onBackToMenu()
-                }
-            }) { Text(stringResource(id = R.string.back)) }
-        }
+        }) { Text(stringResource(id = R.string.back),
+            color = MaterialTheme.colors.surface) }
+        Spacer(modifier = Modifier.height(30.dp))
     }
+
 }

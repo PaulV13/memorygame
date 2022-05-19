@@ -28,7 +28,7 @@ fun CustomCard(
     onSelected2: (index: Int) -> Unit,
     list: MutableState<MutableList<Int>>,
     columns: Int,
-){
+) {
     var rotated by remember { mutableStateOf(false) }
 
     val rotation by animateFloatAsState(
@@ -47,7 +47,7 @@ fun CustomCard(
     )
 
     val modifier =
-        if(columns == 5) Modifier
+        if (columns == 5) Modifier
             .padding(4.dp)
             .width(50.dp)
             .height(70.dp)
@@ -56,11 +56,31 @@ fun CustomCard(
             .width(50.dp)
             .height(75.dp)
 
-    if(list.value.contains(card.id)){
+    if (list.value.contains(card.id)) {
         Card(
-            backgroundColor = Color.Transparent,
-            modifier = modifier){}
-    }else {
+            elevation = 4.dp,
+            border = BorderStroke(1.dp, Color.Black),
+            shape = RoundedCornerShape(4.dp),
+            backgroundColor = Color.White,
+            modifier = modifier
+                .graphicsLayer {
+                    rotationY = rotation
+                    cameraDistance = 8 * density
+                }) {
+            Image(
+                painter = painterResource(id =card.image),
+                contentDescription = "",
+                contentScale = ContentScale.Crop,
+                modifier = Modifier
+                    .graphicsLayer {
+                        alpha = if (rotated) animateBack else animateFront
+                        rotationY = rotation
+                    }
+                    .padding(2.dp)
+                    .clip(shape = RoundedCornerShape(4.dp))
+            )
+        }
+    } else {
         Card(
             elevation = 4.dp,
             border = BorderStroke(1.dp, Color.Black),
@@ -72,11 +92,11 @@ fun CustomCard(
                     cameraDistance = 8 * density
                 }
                 .clickable {
-                    rotated = !rotated
                     if (indexSelected1.value == index) {
                         return@clickable
                     }
                     if ((indexSelected1.value == -1 || indexSelected2.value == -1)) {
+                        rotated = !rotated
                         clicks.value++
                         if (clicks.value == 1) {
                             onSelected1(index)
@@ -86,22 +106,24 @@ fun CustomCard(
                         }
                     }
                 }) {
-                    Image(
-                        painter = painterResource(id =
-                        if(indexSelected1.value == index || indexSelected2.value == index)
-                            card.image
-                        else
-                            card.imageBack),
-                        contentDescription = "",
-                        contentScale = ContentScale.Crop,
-                        modifier = Modifier
-                            .graphicsLayer {
-                                alpha = if (rotated) animateBack else animateFront
-                                rotationY = rotation
-                            }
-                            .padding(2.dp)
-                            .clip(shape = RoundedCornerShape(4.dp))
-                    )
+            Image(
+                painter = painterResource(
+                    id =
+                    if (indexSelected1.value == index || indexSelected2.value == index)
+                        card.image
+                    else
+                        card.imageBack
+                ),
+                contentDescription = "",
+                contentScale = ContentScale.Crop,
+                modifier = Modifier
+                    .graphicsLayer {
+                        alpha = if (rotated) animateBack else animateFront
+                        rotationY = rotation
+                    }
+                    .padding(2.dp)
+                    .clip(shape = RoundedCornerShape(4.dp))
+            )
         }
     }
 
