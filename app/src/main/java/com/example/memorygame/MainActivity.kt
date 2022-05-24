@@ -13,8 +13,8 @@ import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import com.example.memorygame.screens.ScreenGame
-import com.example.memorygame.screens.ScreenMenu
+import com.example.memorygame.ui.ScreenGame
+import com.example.memorygame.ui.ScreenMenu
 import com.example.memorygame.ui.theme.MemorygameTheme
 import com.example.memorygame.viewmodel.GameViewModel
 import dagger.hilt.android.AndroidEntryPoint

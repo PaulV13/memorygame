@@ -1,4 +1,4 @@
-package com.example.memorygame.components
+package com.example.memorygame.ui.components
 
 
 import androidx.compose.foundation.layout.*
