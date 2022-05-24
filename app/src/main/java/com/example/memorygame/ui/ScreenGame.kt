@@ -1,4 +1,4 @@
-package com.example.memorygame.screens
+package com.example.memorygame.ui
 
 
 import androidx.activity.compose.BackHandler
@@ -15,8 +15,8 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.example.memorygame.R
-import com.example.memorygame.components.AlertDialogSample
-import com.example.memorygame.components.CustomCard
+import com.example.memorygame.ui.components.AlertDialogSample
+import com.example.memorygame.ui.components.CustomCard
 import com.example.memorygame.model.Card
 import kotlinx.coroutines.*
 
