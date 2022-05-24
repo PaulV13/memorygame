@@ -119,14 +119,14 @@ fun ScreenGame(
                 text =
                 if (time.value == 60) "Time: "
                 else if (time.value >= 10) "Time: "
-                else "Time: 00:0",
+                else "Time: ",
                 color = Color.DarkGray,
                 style = MaterialTheme.typography.h6
             )
             Text(
                 text = if (time.value == 60) "01:00"
                 else if (time.value >= 10) "00:${time.value}"
-                else "${time.value}",
+                else "00:0${time.value}",
                 color = MaterialTheme.colors.primaryVariant,
                 style = MaterialTheme.typography.h6
             )
@@ -136,6 +136,8 @@ fun ScreenGame(
                 navController = navController,
                 openDialog = openDialog,
                 time = time,
+                cards = cards,
+                parCount = parCount,
                 onConfirmButton = {
                     onResetGame()
                     onRandomList()
