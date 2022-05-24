@@ -3,21 +3,23 @@ package com.example.memorygame
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.activity.viewModels
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
-import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.example.memorygame.screens.ScreenGame
 import com.example.memorygame.screens.ScreenMenu
 import com.example.memorygame.ui.theme.MemorygameTheme
-import com.example.memorygame.viewmodel.CounterViewModel
+import com.example.memorygame.viewmodel.GameViewModel
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class MainActivity : ComponentActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -31,7 +33,7 @@ class MainActivity : ComponentActivity() {
                     color = MaterialTheme.colors.background
                 ) {
                     val navController = rememberNavController()
-                    val viewModel: CounterViewModel = viewModel()
+                    val viewModel: GameViewModel by viewModels()
 
                     NavHost(navController = navController, startDestination = "menu") {
                         composable("menu") {

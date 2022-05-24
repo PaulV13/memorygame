@@ -6,12 +6,14 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.memorygame.R
 import com.example.memorygame.model.Card
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
-import java.util.*
+import javax.inject.Inject
 import kotlin.random.Random
 
-class CounterViewModel: ViewModel() {
+@HiltViewModel
+class GameViewModel @Inject constructor(): ViewModel() {
 
     private val allCards: MutableList<Card> = mutableListOf(
         Card(1, R.drawable.bulbasaur),
