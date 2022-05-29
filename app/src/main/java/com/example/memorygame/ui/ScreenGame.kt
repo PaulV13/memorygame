@@ -10,7 +10,6 @@ import androidx.compose.material.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
@@ -31,23 +30,25 @@ fun ScreenGame(
     movement: Int,
     clicks: MutableState<Int>,
     time: MutableState<Int>,
+    timerStarting: MutableState<Boolean>,
     openDialog: MutableState<Boolean>,
     indexSelected1: MutableState<Int>,
     indexSelected2: MutableState<Int>,
-    list: MutableState<MutableList<Int>>,
     onSelected1: (index: Int) -> Unit,
     onSelected2: (index: Int) -> Unit,
     onResetGame: () -> Unit,
     onRandomList: () -> Unit,
     onBackToMenu: () -> Unit,
-    onGameOver: () -> Unit
+    onGameOver: () -> Unit,
+    onStartTimer: () -> Unit
 ) {
 
-
-    LaunchedEffect(key1 = time.value) {
+    LaunchedEffect(
+        key1 = time.value,
+        key2 = timerStarting.value) {
         delay(1000)
-        if (time.value > 0 && !openDialog.value) {
-            time.value--
+        if (time.value > 0 && !openDialog.value && timerStarting.value) {
+            onStartTimer()
         } else if (time.value == 0) {
             onGameOver()
         }
@@ -68,7 +69,7 @@ fun ScreenGame(
         ) {
             Text(
                 text = stringResource(id = R.string.pairs),
-                color = Color.DarkGray,
+                color = MaterialTheme.colors.surface,
                 style = MaterialTheme.typography.h6
             )
             Text(
@@ -79,7 +80,7 @@ fun ScreenGame(
             Spacer(modifier = Modifier.width(15.dp))
             Text(
                 text = stringResource(id = R.string.movements),
-                color = Color.DarkGray,
+                color = MaterialTheme.colors.surface,
                 style = MaterialTheme.typography.h6
             )
             Text(
@@ -107,8 +108,7 @@ fun ScreenGame(
                         indexSelected2 = indexSelected2,
                         onSelected1 = onSelected1,
                         onSelected2 = onSelected2,
-                        list = list,
-                        columns = columns
+                        columns = columns,
                     )
                 }
             }
@@ -120,7 +120,7 @@ fun ScreenGame(
                 if (time.value == 60) "Time: "
                 else if (time.value >= 10) "Time: "
                 else "Time: ",
-                color = Color.DarkGray,
+                color = MaterialTheme.colors.surface,
                 style = MaterialTheme.typography.h6
             )
             Text(
@@ -136,8 +136,7 @@ fun ScreenGame(
                 navController = navController,
                 openDialog = openDialog,
                 time = time,
-                cards = cards,
-                parCount = parCount,
+                movement = movement,
                 onConfirmButton = {
                     onResetGame()
                     onRandomList()
