@@ -26,7 +26,7 @@ fun ScreenMenu(
         contentAlignment = Alignment.Center) {
         Column(horizontalAlignment = Alignment.CenterHorizontally) {
             Text(text = "MEMORY GAME",
-                color = MaterialTheme.colors.primaryVariant,
+                color = MaterialTheme.colors.surface,
                 fontWeight = FontWeight.Bold,
                 style = MaterialTheme.typography.h4)
             Spacer(modifier = Modifier.height(60.dp))

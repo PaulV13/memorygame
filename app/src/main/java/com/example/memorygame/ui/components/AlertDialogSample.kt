@@ -2,10 +2,7 @@ package com.example.memorygame.ui.components
 
 
 import androidx.compose.foundation.layout.*
-import androidx.compose.material.AlertDialog
-import androidx.compose.material.Button
-import androidx.compose.material.Text
-import androidx.compose.material.TextButton
+import androidx.compose.material.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState
 import androidx.compose.ui.Alignment
@@ -14,37 +11,55 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.example.memorygame.R
-import com.example.memorygame.model.Card
 
 @Composable
 fun AlertDialogSample(
     navController: NavController,
     openDialog: MutableState<Boolean>,
     time: MutableState<Int>,
-    cards:  MutableList<Card>,
-    parCount: Int,
+    movement: Int,
     onConfirmButton: () -> Unit,
     onDismissButton: () -> Unit
 ) {
 
     AlertDialog(
-        onDismissRequest = {
-            openDialog.value = false
-        },
+        onDismissRequest = {},
         title = {
-            Column(modifier = Modifier
-                .fillMaxWidth()
-                .padding(top = 5.dp),
-            horizontalAlignment = Alignment.CenterHorizontally) {
+            if(time.value == 0){
+                Column(modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(top = 5.dp),
+                    horizontalAlignment = Alignment.CenterHorizontally) {
                     Text(
-                        text =
-                        if (time.value == 0) "Time's up! Try again!"
-                        else "Congratulations, you got them all right!!!!"
+                        text = "Time's up! Try again!",
+                        color = MaterialTheme.colors.surface
                     )
                     Spacer(modifier = Modifier.height(30.dp))
+                }
+            }else {
+                Column(modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(top = 5.dp),
+                    horizontalAlignment = Alignment.CenterHorizontally) {
+                    Text(
+                        text = "Congratulations, you have won!",
+                        color = MaterialTheme.colors.surface
+                    )
+                    Spacer(modifier = Modifier.height(30.dp))
+                    Text(
+                        text = "Time: ${60 - time.value} seconds",
+                        color = MaterialTheme.colors.surface
+                    )
+                    Spacer(modifier = Modifier.height(15.dp))
+                    Text(
+                        text = "Movements: $movement",
+                        color = MaterialTheme.colors.surface
+                    )
+                    Spacer(modifier = Modifier.height(30.dp))
+                }
             }
-
         },
+        backgroundColor = MaterialTheme.colors.primaryVariant,
         dismissButton = {
             TextButton(
                 onClick = {
@@ -52,7 +67,8 @@ fun AlertDialogSample(
                     navController.popBackStack("menu", false)
                     onDismissButton()
                 }) {
-                Text(stringResource(id = R.string.back))
+                Text(stringResource(id = R.string.back),
+                    color = MaterialTheme.colors.surface)
             }
         },
         confirmButton = {
@@ -61,7 +77,8 @@ fun AlertDialogSample(
                     openDialog.value = false
                     onConfirmButton()
                 }) {
-                Text(stringResource(id = R.string.play))
+                Text(stringResource(id = R.string.play),
+                    color = MaterialTheme.colors.surface)
             }
         },
     )

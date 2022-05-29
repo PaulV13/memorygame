@@ -16,29 +16,34 @@ import kotlin.random.Random
 class GameViewModel @Inject constructor(): ViewModel() {
 
     private val allCards: MutableList<Card> = mutableListOf(
-        Card(1, R.drawable.bulbasaur),
-        Card(2, R.drawable.caterpie),
-        Card(3, R.drawable.clefairy),
-        Card(4, R.drawable.pidgey),
-        Card(5, R.drawable.pikachu),
-        Card(6, R.drawable.charmander),
-        Card(7, R.drawable.diglett),
-        Card(8, R.drawable.ekans),
-        Card(9, R.drawable.jigglypuff),
-        Card(10, R.drawable.nidoran),
-        Card(11, R.drawable.oddish),
-        Card(12, R.drawable.rattata),
-        Card(13, R.drawable.squirtle),
-        Card(14, R.drawable.sandshrew),
-        Card(15, R.drawable.zubat),
+        Card(1, "bulbasaur", R.drawable.bulbasaur),
+        Card(2,"caterpie", R.drawable.caterpie),
+        Card(3,"clefairy", R.drawable.clefairy),
+        Card(4,"pidgey", R.drawable.pidgey),
+        Card(5,"pikachu", R.drawable.pikachu),
+        Card(6,"charmander", R.drawable.charmander),
+        Card(7,"diglett", R.drawable.diglett),
+        Card(8,"ekans", R.drawable.ekans),
+        Card(9,"jigglypuff", R.drawable.jigglypuff),
+        Card(10,"nidoran", R.drawable.nidoran),
+        Card(11,"oddish", R.drawable.oddish),
+        Card(12,"rattata", R.drawable.rattata),
+        Card(13,"squirtle", R.drawable.squirtle),
+        Card(14,"sandshrew", R.drawable.sandshrew),
+        Card(15,"zubat", R.drawable.zubat)
     )
 
     private var _cards: MutableState<MutableList<Card>> = mutableStateOf(mutableListOf())
     var cards: MutableState<MutableList<Card>> = _cards
 
-    var columns by mutableStateOf(0)
-    var parCount by mutableStateOf(0)
-    var movement by mutableStateOf(0)
+    private var _movement: MutableState<Int> = mutableStateOf(0)
+    var movement: MutableState<Int> = _movement
+
+    private var _parCount: MutableState<Int> = mutableStateOf(0)
+    var parCount: MutableState<Int> = _parCount
+
+    private var _columns: MutableState<Int> = mutableStateOf(0)
+    var columns: MutableState<Int> = _columns
 
     private var _clicks: MutableState<Int> = mutableStateOf(0)
     var clicks: MutableState<Int> = _clicks
@@ -61,21 +66,27 @@ class GameViewModel @Inject constructor(): ViewModel() {
     private var _choiceIndex2: MutableState<Int> = mutableStateOf(-1)
     val choiceIndex2: MutableState<Int> = _choiceIndex2
 
+    private var _timerStarting: MutableState<Boolean> = mutableStateOf(false)
+    var timerStarting: MutableState<Boolean> = _timerStarting
+
     fun getIndex1(index: Int){
+        timerStarting.value = true
+        _cards.value[index].isVisible = true
         _choiceIndex1.value = index
     }
 
     fun getIndex2(index: Int){
+        _cards.value[index].isVisible = true
         _choiceIndex2.value = index
         viewModelScope.launch {
-            delay(1000)
+            delay(500)
             compareCard()
         }
-        movement++
+        _movement.value++
     }
 
     fun updateColumns(number: Int){
-        columns = number
+        _columns.value = number
     }
 
     fun updateCards(){
@@ -83,59 +94,78 @@ class GameViewModel @Inject constructor(): ViewModel() {
     }
 
     fun updateCountPar(countPar: Int){
-        parCount = countPar
+        _parCount.value = countPar
     }
 
     private fun compareCard(){
-        match.value = cards.value[choiceIndex1.value].id == cards.value[choiceIndex2.value].id
+        match.value = _cards.value[choiceIndex1.value].name == _cards.value[choiceIndex2.value].name
         if(match.value){
-            list.value.add(cards.value[choiceIndex2.value].id)
-            choiceIndex1.value = -1
-            choiceIndex2.value = -1
+            _choiceIndex1.value = -1
+            _choiceIndex2.value = -1
             parCountDown()
         }else{
-            choiceIndex1.value = -1
-            choiceIndex2.value = -1
+            _cards.value[choiceIndex1.value].isVisible = false
+            _cards.value[choiceIndex2.value].isVisible = false
+            _choiceIndex1.value = -1
+            _choiceIndex2.value = -1
         }
     }
 
     private fun parCountDown(){
-        parCount--
-        if(parCount == 0){
+        _parCount.value--
+        if(_parCount.value == 0){
             showAlert()
         }
     }
 
     fun showAlert(){
-        openDialog.value = true
+        _openDialog.value = true
     }
 
     fun resetGame(){
-        parCount = cards.value.size / 2
-        choiceIndex1.value = -1
-        choiceIndex2.value = -1
-        time.value = 60
-        movement = 0
-        clicks.value = 0
-        match.value = false
-        list.value = mutableListOf()
+        _parCount.value = cards.value.size / 2
+        _choiceIndex1.value = -1
+        _choiceIndex2.value = -1
+        _time.value = 60
+        _movement.value = 0
+        _clicks.value = 0
+        _match.value = false
+        _list.value = mutableListOf()
+        _timerStarting.value = false
     }
 
     fun getRandomList(){
-        cards.value = mutableListOf()
-        for(x in 0 until parCount){
+        _cards.value = mutableListOf()
+        var count = parCount.value
+        for(x in 0 until _parCount.value){
             var randomIndex = Random.nextInt(allCards.size)
             var randomElement = allCards[randomIndex]
+            randomElement.isVisible = false
 
-            while(cards.value.contains(randomElement)){
+            while(_cards.value.contains(randomElement)){
                 randomIndex = Random.nextInt(allCards.size)
                 randomElement = allCards[randomIndex]
+                randomElement.isVisible = false
             }
 
-            for(y in 0..1){
-                cards.value.add(randomElement)
-            }
+            _cards.value.add(randomElement)
+
+            count++
+            val newCard = Card(
+                count,
+                randomElement.name,
+                randomElement.image,
+                randomElement.imageBack,
+                false
+            )
+
+            _cards.value.add(newCard)
+
         }
-        cards.value.shuffle()
+        _cards.value.shuffle()
+    }
+
+    fun startTimer() {
+        time.value--
     }
 }

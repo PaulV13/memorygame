@@ -51,21 +51,22 @@ class MainActivity : ComponentActivity() {
                         composable("game"){
                                 ScreenGame(navController = navController,
                                     cards =  viewModel.cards.value,
-                                    columns = viewModel.columns,
-                                    parCount = viewModel.parCount,
-                                    movement = viewModel.movement,
+                                    columns = viewModel.columns.value,
+                                    parCount = viewModel.parCount.value,
+                                    movement = viewModel.movement.value,
                                     clicks = viewModel.clicks,
                                     time = viewModel.time,
+                                    timerStarting = viewModel.timerStarting,
                                     openDialog = viewModel.openDialog,
                                     indexSelected1 = viewModel.choiceIndex1,
                                     indexSelected2 = viewModel.choiceIndex2,
-                                    list = viewModel.list,
                                     onSelected1 = { index -> viewModel.getIndex1(index) },
                                     onSelected2 = { index -> viewModel.getIndex2(index) },
                                     onResetGame = { viewModel.resetGame() },
                                     onBackToMenu = { viewModel.resetGame() },
                                     onRandomList = { viewModel.getRandomList() },
-                                    onGameOver = { viewModel.showAlert() }
+                                    onGameOver = { viewModel.showAlert() },
+                                    onStartTimer = { viewModel.startTimer()}
                                 )
                         }
                     }
