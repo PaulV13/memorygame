@@ -57,9 +57,6 @@ class GameViewModel @Inject constructor(): ViewModel() {
     private var _match: MutableState<Boolean> = mutableStateOf(false)
     var match: MutableState<Boolean> = _match
 
-    private var _list: MutableState<MutableList<Int>> = mutableStateOf(mutableListOf())
-    val list: MutableState<MutableList<Int>> = _list
-
     private var _choiceIndex1: MutableState<Int> = mutableStateOf(-1)
     val choiceIndex1: MutableState<Int> = _choiceIndex1
 
@@ -130,7 +127,6 @@ class GameViewModel @Inject constructor(): ViewModel() {
         _movement.value = 0
         _clicks.value = 0
         _match.value = false
-        _list.value = mutableListOf()
         _timerStarting.value = false
     }
 
