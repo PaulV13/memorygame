@@ -12,6 +12,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.example.memorygame.R
+import com.example.memorygame.ui.scaledSp
 
 @Composable
 fun AlertDialogSample(
@@ -22,6 +23,8 @@ fun AlertDialogSample(
     onConfirmButton: () -> Unit,
     onDismissButton: () -> Unit
 ) {
+    var sizeText = 16
+    var sizeTextButtons = 12
 
     AlertDialog(
         onDismissRequest = {},
@@ -33,6 +36,7 @@ fun AlertDialogSample(
                     horizontalAlignment = Alignment.CenterHorizontally) {
                     Text(
                         text = "Time's up! Try again!",
+                        fontSize = sizeText.scaledSp(),
                         color = Color.White
                     )
                     Spacer(modifier = Modifier.height(30.dp))
@@ -44,16 +48,19 @@ fun AlertDialogSample(
                     horizontalAlignment = Alignment.CenterHorizontally) {
                     Text(
                         text = "Congratulations, you have won!",
+                        fontSize = sizeText.scaledSp(),
                         color = Color.White
                     )
                     Spacer(modifier = Modifier.height(30.dp))
                     Text(
                         text = "Time: ${60 - time.value} seconds",
+                        fontSize = sizeText.scaledSp(),
                         color = Color.White
                     )
                     Spacer(modifier = Modifier.height(15.dp))
                     Text(
                         text = "Movements: $movement",
+                        fontSize = sizeText.scaledSp(),
                         color = Color.White
                     )
                     Spacer(modifier = Modifier.height(30.dp))
@@ -73,6 +80,7 @@ fun AlertDialogSample(
                         onDismissButton()
                     }) {
                     Text(stringResource(id = R.string.back),
+                        fontSize = sizeTextButtons.scaledSp(),
                         color = MaterialTheme.colors.surface)
                 }
                 Spacer(modifier = Modifier.width(20.dp))
@@ -82,6 +90,7 @@ fun AlertDialogSample(
                         onConfirmButton()
                     }) {
                     Text(stringResource(id = R.string.play),
+                        fontSize = sizeTextButtons.scaledSp(),
                         color = MaterialTheme.colors.surface)
                 }
             }
