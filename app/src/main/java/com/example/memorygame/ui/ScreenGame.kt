@@ -42,6 +42,8 @@ fun ScreenGame(
     onGameOver: () -> Unit,
     onStartTimer: () -> Unit
 ) {
+    var sizeTextTitle = 18
+    var sizeTextButtons = 12
 
     LaunchedEffect(
         key1 = time.value,
@@ -69,23 +71,27 @@ fun ScreenGame(
         ) {
             Text(
                 text = stringResource(id = R.string.pairs),
+                fontSize = sizeTextTitle.scaledSp(),
                 color = MaterialTheme.colors.surface,
                 style = MaterialTheme.typography.h6
             )
             Text(
                 text = "$parCount",
                 color = MaterialTheme.colors.primaryVariant,
+                fontSize = sizeTextTitle.scaledSp(),
                 style = MaterialTheme.typography.h6
             )
             Spacer(modifier = Modifier.width(15.dp))
             Text(
                 text = stringResource(id = R.string.movements),
+                fontSize = sizeTextTitle.scaledSp(),
                 color = MaterialTheme.colors.surface,
                 style = MaterialTheme.typography.h6
             )
             Text(
                 text = "$movement",
                 color = MaterialTheme.colors.primaryVariant,
+                fontSize = sizeTextTitle.scaledSp(),
                 style = MaterialTheme.typography.h6
             )
         }
@@ -120,6 +126,7 @@ fun ScreenGame(
                 if (time.value == 60) "Time: "
                 else if (time.value >= 10) "Time: "
                 else "Time: ",
+                fontSize = sizeTextTitle.scaledSp(),
                 color = MaterialTheme.colors.surface,
                 style = MaterialTheme.typography.h6
             )
@@ -127,6 +134,7 @@ fun ScreenGame(
                 text = if (time.value == 60) "01:00"
                 else if (time.value >= 10) "00:${time.value}"
                 else "00:0${time.value}",
+                fontSize = sizeTextTitle.scaledSp(),
                 color = MaterialTheme.colors.primaryVariant,
                 style = MaterialTheme.typography.h6
             )
@@ -157,6 +165,7 @@ fun ScreenGame(
                 onBackToMenu()
             }
         }) { Text(stringResource(id = R.string.back),
+            fontSize = sizeTextButtons.scaledSp(),
             color = MaterialTheme.colors.surface) }
         Spacer(modifier = Modifier.height(30.dp))
     }
