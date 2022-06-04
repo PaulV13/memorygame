@@ -6,15 +6,10 @@ import androidx.activity.compose.setContent
 import androidx.activity.viewModels
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.*
-import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.graphics.Color
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
-import androidx.navigation.compose.NavHost
-import androidx.navigation.compose.composable
-import androidx.navigation.compose.rememberNavController
-import com.example.memorygame.ui.ScreenGame
-import com.example.memorygame.ui.ScreenMenu
+import com.example.memorygame.navigation.AppNavigation
 import com.example.memorygame.ui.theme.MemorygameTheme
 import com.example.memorygame.viewmodel.GameViewModel
 import dagger.hilt.android.AndroidEntryPoint
@@ -30,57 +25,12 @@ class MainActivity : ComponentActivity() {
                 // A surface container using the 'background' color from the theme
                 Surface(
                     modifier = Modifier.fillMaxSize(),
-                    color = MaterialTheme.colors.background
+                    color = Color.White
                 ) {
-                    val navController = rememberNavController()
                     val viewModel: GameViewModel by viewModels()
-
-                    NavHost(navController = navController, startDestination = "menu") {
-                        composable("menu") {
-                            ScreenMenu(
-                                navController = navController,
-                                onClicked = { number, countPar ->
-                                    run {
-                                        viewModel.updateColumns(number)
-                                        viewModel.updateCountPar(countPar)
-                                        viewModel.updateCards()
-                                    }
-                                }
-                            )
-                        }
-                        composable("game"){
-                                ScreenGame(navController = navController,
-                                    cards =  viewModel.cards.value,
-                                    columns = viewModel.columns.value,
-                                    parCount = viewModel.parCount.value,
-                                    movement = viewModel.movement.value,
-                                    clicks = viewModel.clicks,
-                                    time = viewModel.time,
-                                    timerStarting = viewModel.timerStarting,
-                                    openDialog = viewModel.openDialog,
-                                    indexSelected1 = viewModel.choiceIndex1,
-                                    indexSelected2 = viewModel.choiceIndex2,
-                                    onSelected1 = { index -> viewModel.getIndex1(index) },
-                                    onSelected2 = { index -> viewModel.getIndex2(index) },
-                                    onResetGame = { viewModel.resetGame() },
-                                    onBackToMenu = { viewModel.resetGame() },
-                                    onRandomList = { viewModel.getRandomList() },
-                                    onGameOver = { viewModel.showAlert() },
-                                    onStartTimer = { viewModel.startTimer()}
-                                )
-                        }
-                    }
+                    AppNavigation(viewModel = viewModel)
                 }
             }
         }
-    }
-}
-
-
-@Preview(showBackground = true)
-@Composable
-fun DefaultPreview() {
-    MemorygameTheme {
-
     }
 }
